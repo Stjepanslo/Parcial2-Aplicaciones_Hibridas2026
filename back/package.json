@@ -1,0 +1,22 @@
+{
+  "name": "parcial1-aplicaciones_hibridas2026",
+  "version": "1.0.0",
+  "description": "API de proyectos y clientes",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "5.2.1",
+    "mongodb": "^7.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
