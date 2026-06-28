@@ -1,20 +1,26 @@
 import express from "express"
+import cors from "cors"
+import dotenv from "dotenv"
 import projectRoutes from "./routes/projects.routes.js"
 import projectRoutesApi from "./api/routes/projects.routes.js"
 import clientRoutes from "./routes/clients.routes.js"
 import clientRoutesApi from "./api/routes/clients.routes.js"
+import usuariosRoutesApi from "./api/routes/usuarios.routes.js"
+
+dotenv.config()
 
 const app = express()
 
+app.use(cors())
 app.use("/", express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-
 
 app.use(projectRoutes)
 app.use(clientRoutes)
 app.use("/api", projectRoutesApi)
 app.use("/api", clientRoutesApi)
+app.use("/api/usuarios", usuariosRoutesApi)
 
 const PORT = 3333
 
