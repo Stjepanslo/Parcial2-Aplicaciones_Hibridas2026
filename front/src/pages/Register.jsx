@@ -82,7 +82,7 @@ const Register = () => {
         </form>
 
         <p className='text-center mt-3'>
-          ¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
+          ¿Ya tenes cuenta? <a href="/login">Inicia sesión directamente</a>
         </p>
       </div>
     </div>

@@ -47,8 +47,8 @@ const ClientesList = () => {
                 <td><strong>{cliente.nombre}</strong></td>
                 <td>{cliente.descripcion.substring(0, 50)}...</td>
                 <td>
-                  <Link to={`/editar-cliente/${cliente._id}`} className="btn btn-warning btn-sm me-2">Editar</Link>
-                  <Link to={`/eliminar-cliente/${cliente._id}`} className="btn btn-danger btn-sm">Eliminar</Link>
+                  <Link to={`/editar-cliente/${cliente._id}`} className="btn btn-outline-warning btn-sm me-2">Editar</Link>
+                  <Link to={`/eliminar-cliente/${cliente._id}`} className="btn btn-outline-danger btn-sm">Eliminar</Link>
                 </td>
               </tr>
             ))

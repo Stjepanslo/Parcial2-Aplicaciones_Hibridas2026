@@ -155,3 +155,37 @@
     color:#ffc107;
     text-shadow: 1px 1px 1px bl;
 }
+
+.banner {
+  width: 100%;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  padding: 60px 20px;
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.banner h1 {
+  margin: 0;
+  font-size: 3rem;
+  font-family: 'Carter One', cursive;
+}
+
+.banner p {
+  margin: 10px 0 0 0;
+  font-size: 1.2rem;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
