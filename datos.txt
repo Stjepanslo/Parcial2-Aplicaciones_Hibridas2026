@@ -1,2 +1,45 @@
+# Portfolio de Proyectos - Parcial 2
+
+Una aplicación web fullStack donde en principio puedo mostrar mis proyectos. A medida que avanzaba me di cuenta que tengo que replantear el objetivo del sitio para que los usuarios se registren y compartan sus trabajos. No me convence el resultado pero como funciono trate de no tocarlo más.
+
+¿Qué es?
+
+Es un sitio web donde
+- Cualquiera puede ver los proyectos 
+- El admin no está dividido del usuario común, no hay gestion de roles por ahora.
+- Los proyectos están organizados por secciones y clientes
+- Todo está protegido con autenticación JWT
+
+PARA EMPEZAR:
+
+Levantar la aplicación
+
+Clonar el repositorio
+
+https://github.com/Stjepanslo/Parcial2-Aplicaciones_Hibridas2026.git
+Parcial2-Aplicaciones_Hibridas2026
+
+
+Inicio del Backend
+
+cd back
+npm run dev.
+Resultado: http://localhost:3333
+
+
+Inicio del Frontend
+cd front
+npm run dev.
+
+Resultado: Local: http://localhost:5173
+
+--------------------------------------
 usuario: esteban.oven@davinci.edu.ar
 pass: Test1234!
+--------------------------------------
+
+en el .env iría:
+
+SECRET_PASSWORD=aplicacionesHibridas2026
+MONGODB_URI=mongodb+srv://eaoven89_db_user:CYMdfQ6I75osibm5@clusteraplicacioneshibr.chxaswv.mongodb.net/eaoven89_db_user
+DB_NAME=AH20232CP1
