@@ -9,6 +9,10 @@ import NuevoCliente from "../pages/NuevoCliente"
 import ClientesList from "../pages/ClientesList"
 import EditarCliente from "../pages/EditarCliente"
 import EliminarCliente from "../pages/EliminarCliente"
+import NuevoProyecto from "../pages/NuevoProyecto"
+import ProyectosList from "../pages/ProyectosList"
+import EditarProyecto from "../pages/EditarProyecto"
+import EliminarProyecto from "../pages/EliminarProyecto"
 import ProtectedRoute from "../components/ProtectedRoute"
 
 const router = createBrowserRouter([
@@ -18,7 +22,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <ProtectedRoute element={<Home />} />
+        element: <Home />
       },
       {
         path: "/detalle/:idProyecto",
@@ -39,6 +43,22 @@ const router = createBrowserRouter([
       {
         path: "/eliminar-cliente/:idCliente",
         element: <ProtectedRoute element={<EliminarCliente />} />
+      },
+      {
+        path: "/proyectos",
+        element: <ProtectedRoute element={<ProyectosList />} />
+      },
+      {
+        path: "/nuevo-proyecto",
+        element: <ProtectedRoute element={<NuevoProyecto />} />
+      },
+      {
+        path: "/editar-proyecto/:idProyecto",
+        element: <ProtectedRoute element={<EditarProyecto />} />
+      },
+      {
+        path: "/eliminar-proyecto/:idProyecto",
+        element: <ProtectedRoute element={<EliminarProyecto />} />
       },
       {
         path: "/login",

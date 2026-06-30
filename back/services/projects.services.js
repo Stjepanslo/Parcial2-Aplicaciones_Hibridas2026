@@ -6,15 +6,15 @@ const db = client.db("AH20232CP1")
 export async function getProyectos(filter = {}) {
     try {
         await client.connect()
-        const filterMongo = {}
+        const filterMongo = { eliminado: { $ne: true } }
         
         if (filter?.section) {
             filterMongo.section = filter.section
         }
-
+        
         if (filter?.technology) {
-        filterMongo.technologies = { $regex: filter.technology, $options: "i" }
-}
+            filterMongo.technologies = { $regex: filter.technology, $options: "i" }
+        }
         
         const proyectos = await db.collection("Projects").find(filterMongo).toArray()
         await client.close()
@@ -82,8 +82,9 @@ export async function updateProyecto(id, proyecto) {
 export async function deleteProyecto(id) {
     try {
         await client.connect()
-        const resultado = await db.collection("Projects").deleteOne(
-            { _id: new ObjectId(id) }
+        const resultado = await db.collection("Projects").updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { eliminado: true } }
         )
         await client.close()
         return resultado

@@ -8,7 +8,7 @@ const NavBar = () => {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">Portfolio</Link>
+                <Link className="navbar-brand" to="/" className="font1">Publiqueiyon</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -24,8 +24,9 @@ const NavBar = () => {
                         {email && (
                             <>
                                 <Link className="nav-link" to="/clientes">Clientes</Link>
-                                <span className="nav-link">{email}</span>
-                                <Link className="nav-link" to="/logout">Salir</Link>
+                                <Link className="nav-link" to="/proyectos">Proyectos</Link>
+                                <span className="nav-link" style={{ "color":"#7908a5" }}>{email}</span>
+                                <Link className="nav-link" to="/logout"><strong>Salir</strong></Link>
                             </>
                         )}
                     </div>

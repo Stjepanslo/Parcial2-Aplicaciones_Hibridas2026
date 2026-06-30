@@ -5,7 +5,7 @@ import { useClientesService } from "../services/clientes.service"
 const EliminarCliente = () => {
     const [cliente, setCliente] = useState(null)
     const { idCliente } = useParams()
-    const { getClienteById, deleteProyecto } = useClientesService()
+    const { getClienteById, deleteCliente } = useClientesService()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const EliminarCliente = () => {
 
     const handleDelete = (e) => {
         e.preventDefault()
-        deleteProyecto(idCliente)
+        deleteCliente(idCliente)
             .then(() => navigate("/clientes"))
             .catch(err => console.log(err))
     }

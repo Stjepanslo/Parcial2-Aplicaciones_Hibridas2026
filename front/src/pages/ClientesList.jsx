@@ -26,7 +26,7 @@ const ClientesList = () => {
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Clientes</h2>
+        <h2 className="amarillo">Clientes</h2>
         <Link to="/nuevo-cliente" className="btn btn-primary">+ Nuevo Cliente</Link>
       </div>
 

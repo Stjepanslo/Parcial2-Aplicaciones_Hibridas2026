@@ -59,3 +59,14 @@ export async function updateCliente(req, res) {
         res.status(500).json({ message: "Error al actualizar el cliente" })
     }
 }
+
+export async function deleteCliente(req, res) {
+    const id = req.params.id
+    
+    try {
+        const resultado = await clientsService.deleteProyecto(id)
+        res.status(200).json({ message: "Cliente eliminado", resultado })
+    } catch (error) {
+        res.status(500).json({ message: "Error al eliminar el cliente" })
+    }
+}

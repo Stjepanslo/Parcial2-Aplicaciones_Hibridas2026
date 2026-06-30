@@ -3,10 +3,12 @@ import { MongoClient, ObjectId } from "mongodb"
 const client = new MongoClient("mongodb+srv://eaoven89_db_user:CYMdfQ6I75osibm5@clusteraplicacioneshibr.chxaswv.mongodb.net/eaoven89_db_user")
 const db = client.db("AH20232CP1")
 
-export async function getClientes() {
+export async function getClientes(filter = {}) {
     try {
         await client.connect()
-        const clientes = await db.collection("Clientes").find({}).toArray()
+        const filterMongo = { eliminado: { $ne: true } }
+        
+        const clientes = await db.collection("Clientes").find(filterMongo).toArray()
         await client.close()
         return clientes
     } catch (error) {
@@ -60,6 +62,21 @@ export async function updateCliente(id, cliente) {
         )
         await client.close()
         return { _id: id, ...cliente }
+    } catch (error) {
+        console.log("Error:", error)
+        throw error
+    }
+}
+
+export async function deleteProyecto(id) {
+    try {
+        await client.connect()
+        const resultado = await db.collection("Clientes").updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { eliminado: true } }
+        )
+        await client.close()
+        return resultado
     } catch (error) {
         console.log("Error:", error)
         throw error
