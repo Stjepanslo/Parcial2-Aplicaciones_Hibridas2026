@@ -37,9 +37,3 @@ Resultado: Local: http://localhost:5173
 usuario: esteban.oven@davinci.edu.ar
 pass: Test1234!
 --------------------------------------
-
-en el .env iría:
-
-SECRET_PASSWORD=aplicacionesHibridas2026
-MONGODB_URI=mongodb+srv://eaoven89_db_user:CYMdfQ6I75osibm5@clusteraplicacioneshibr.chxaswv.mongodb.net/eaoven89_db_user
-DB_NAME=AH20232CP1
