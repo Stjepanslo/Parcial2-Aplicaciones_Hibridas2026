@@ -15,16 +15,15 @@ const NavBar = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <div className="navbar-nav ms-auto">
                         <Link className="nav-link" to="/">Home</Link>
-                        
                         {!email && (
                             <>
                                 <Link className="nav-link" to="/login">Login</Link>
                                 <Link className="nav-link" to="/register">Registro</Link>
                             </>
                         )}
-
                         {email && (
                             <>
+                                <Link className="nav-link" to="/clientes">Clientes</Link>
                                 <span className="nav-link">{email}</span>
                                 <Link className="nav-link" to="/logout">Salir</Link>
                             </>

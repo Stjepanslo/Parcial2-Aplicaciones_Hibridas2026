@@ -11,5 +11,7 @@ export function useClientesService(){
     
     const getProyectosByCliente = (idCliente) => call("/clientes/" + idCliente + "/proyectos", "GET")
 
-    return { getClientes, getClienteById, createCliente, getProyectosByCliente }
+    const updateCliente = (idCliente, cliente) => call("/clientes/" + idCliente, "PATCH", cliente)
+
+    return { getClientes, getClienteById, createCliente, getProyectosByCliente, updateCliente }
 }

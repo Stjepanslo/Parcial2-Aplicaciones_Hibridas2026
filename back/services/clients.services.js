@@ -50,3 +50,18 @@ export async function getProyectosByClienteId(clienteId) {
         return []
     }
 }
+
+export async function updateCliente(id, cliente) {
+    try {
+        await client.connect()
+        await db.collection("Clientes").updateOne(
+            { _id: new ObjectId(id) },
+            { $set: cliente }
+        )
+        await client.close()
+        return { _id: id, ...cliente }
+    } catch (error) {
+        console.log("Error:", error)
+        throw error
+    }
+}
