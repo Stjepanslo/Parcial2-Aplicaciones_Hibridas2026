@@ -19,38 +19,55 @@ const EditarProyecto = () => {
     const { getClientes } = useClientesService()
     const [loading, setLoading] = useState(true)
     const [clientes, setClientes] = useState([])
+    const [imagenPreview, setImagenPreview] = useState(null)
+    const [imagenActual, setImagenActual] = useState(null)
     
-    const imgUrl = watch("img")
+    const imagenFile = watch("img")
 
     useEffect(() => {
-        getClientes()
-            .then(data => setClientes(data))
-            .catch(err => console.log(err))
-
-        getProyectoById(idProyecto)
-            .then(data => {
-                setValue("name", data.name)
-                setValue("description", data.description)
-                setValue("link", data.link)
-                setValue("img", data.img)
-                setValue("technologies", data.technologies.join(", "))
-                setValue("section", data.section)
-                setValue("clientId", data.clientId)
-                setLoading(false)
-            })
-            .catch(err => console.log(err))
+        Promise.all([
+            getClientes(),
+            getProyectoById(idProyecto)
+        ])
+        .then(([clientesData, proyectoData]) => {
+            setClientes(clientesData)
+            setValue("name", proyectoData.name)
+            setValue("description", proyectoData.description)
+            setValue("link", proyectoData.link)
+            setValue("technologies", proyectoData.technologies.join(", "))
+            setValue("section", proyectoData.section)
+            setValue("clientId", proyectoData.clientId)
+            setImagenActual(proyectoData.img)
+            setLoading(false)
+        })
+        .catch(err => console.log(err))
     }, [idProyecto])
 
+    useEffect(() => {
+        if (imagenFile && imagenFile.length > 0) {
+            const file = imagenFile[0]
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setImagenPreview(reader.result)
+            }
+            reader.readAsDataURL(file)
+        }
+    }, [imagenFile])
+
     const onSubmit = (formData) => {
-        updateProyecto(idProyecto, {
-            name: formData.name,
-            description: formData.description,
-            link: formData.link,
-            img: formData.img,
-            technologies: formData.technologies.split(",").map(t => t.trim()),
-            section: formData.section,
-            clientId: formData.clientId
-        })
+        const form = new FormData()
+        form.append("name", formData.name)
+        form.append("description", formData.description)
+        form.append("link", formData.link)
+        form.append("technologies", formData.technologies)
+        form.append("section", formData.section)
+        form.append("clientId", formData.clientId)
+        
+        if (formData.img && formData.img.length > 0) {
+            form.append("img", formData.img[0])
+        }
+
+        updateProyecto(idProyecto, form)
             .then(data => navigate("/proyectos"))
             .catch(err => console.log(err))
     }
@@ -96,11 +113,12 @@ const EditarProyecto = () => {
                             </div>
 
                             <div className="mb-3">
-                                <label className="form-label">Imagen (URL):</label>
+                                <label className="form-label">Imagen:</label>
                                 <input 
-                                    type="url" 
+                                    type="file" 
+                                    accept="image/*"
                                     className="form-control" 
-                                    {...register("img", { required: "Imagen es requerida" })}
+                                    {...register("img")}
                                 />
                                 {errors.img && <span className="text-danger">{errors.img.message}</span>}
                             </div>
@@ -139,7 +157,7 @@ const EditarProyecto = () => {
                                 >
                                     <option value="">Selecciona un cliente</option>
                                     {clientes.map(cliente => (
-                                        <option key={cliente._id} value={cliente._id}>{cliente.nombre}</option>
+                                        <option key={cliente._id} value={cliente._id.toString()}>{cliente.nombre}</option>
                                     ))}
                                 </select>
                                 {errors.clientId && <span className="text-danger">{errors.clientId.message}</span>}
@@ -153,13 +171,18 @@ const EditarProyecto = () => {
                 <div className="col-md-5">
                     <div className="card p-4 shadow">
                         <h5 className="mb-3">Vista previa</h5>
-                        {imgUrl ? (
+                        {imagenPreview ? (
                             <div>
-                                <img src={imgUrl} alt="Preview" className="img-fluid rounded mb-3" />
-                                <p className="text-muted small">{imgUrl}</p>
+                                <img src={imagenPreview} alt="Preview" className="img-fluid rounded mb-3" />
+                                <p className="text-muted small">Nueva imagen seleccionada</p>
+                            </div>
+                        ) : imagenActual ? (
+                            <div>
+                                <img src={imagenActual} alt="Imagen actual" className="img-fluid rounded mb-3" />
+                                <p className="text-muted small">Imagen actual</p>
                             </div>
                         ) : (
-                            <div className="alert alert-info">Ingresa una URL de imagen para ver la vista previa</div>
+                            <div className="alert alert-info">Selecciona una imagen para ver la vista previa</div>
                         )}
                     </div>
                 </div>

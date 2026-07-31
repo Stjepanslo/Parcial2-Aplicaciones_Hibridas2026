@@ -5,6 +5,7 @@ import Login from "../pages/Login"
 import Register from "../pages/Register"
 import Detalle from "../pages/Detalle"
 import Logout from "../pages/Logout"
+import NotFound from "../pages/NotFound"
 import NuevoCliente from "../pages/NuevoCliente"
 import ClientesList from "../pages/ClientesList"
 import EditarCliente from "../pages/EditarCliente"
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "/logout",
         element: <Logout />
+      },
+      {
+        path: "*",
+        element: <NotFound />
       }
     ]
   }

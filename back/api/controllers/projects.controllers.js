@@ -1,4 +1,5 @@
 import * as projectsService from "../../services/projects.services.js"
+import { deleteImage } from "../../middlewares/imagenes.upload.js"
 
 export async function getProyectos(req, res) {
     const filter = req.query
@@ -26,16 +27,34 @@ export async function getProyectoById(req, res) {
 }
 
 export async function createProyecto(req, res) {
-    const { name, description, link, img, technologies, section } = req.body
-    
-    if (!name || !section) {
-        return res.status(400).json({ message: "Campos requeridos: name, section" })
-    }
-    
     try {
-        const proyecto = await projectsService.createProyecto(req.body)
-        res.status(201).json(proyecto)
+        const { name, description, link, section, clientId } = req.body
+        
+        const technologies = req.body.technologies.split(',').map(t => t.trim()).filter(t => t !== '')
+
+        const img = req.file ? `http://localhost:3333/uploads/${req.file.filename}` : null
+
+        if (!name || !section) {
+            return res.status(400).json({ message: "Campos requeridos: name, section" })
+        }
+
+        const proyecto = {
+            name,
+            description,
+            link,
+            img,
+            technologies,
+            section,
+            clientId
+        }
+
+        const { ObjectId } = await import("mongodb")
+        proyecto.clientId = new ObjectId(clientId)
+
+        const result = await projectsService.createProyecto(proyecto)
+        res.status(201).json(result)
     } catch (error) {
+        console.log("Error:", error)
         res.status(500).json({ message: "Error al crear el proyecto" })
     }
 }
@@ -60,9 +79,32 @@ export async function updateProyecto(req, res) {
     const id = req.params.id
     
     try {
-        const proyecto = await projectsService.updateProyecto(id, req.body)
-        res.status(200).json(proyecto)
+        const proyectoActual = await projectsService.getProyectoById(id)
+        
+        let proyecto = req.body
+        
+        if (proyecto.technologies) {
+            proyecto.technologies = proyecto.technologies.split(',').map(t => t.trim()).filter(t => t !== '')
+        }
+
+        if (proyecto.clientId) {
+            const { ObjectId } = await import("mongodb")
+            proyecto.clientId = new ObjectId(proyecto.clientId)
+        }
+        
+        if (req.file) {
+            proyecto.img = `http://localhost:3333/uploads/${req.file.filename}`
+            
+            // Borrar imagen vieja si existe
+            if (proyectoActual.img) {
+                await deleteImage(proyectoActual.img)
+            }
+        }
+
+        const result = await projectsService.updateProyecto(id, proyecto)
+        res.status(200).json(result)
     } catch (error) {
+        console.log("Error:", error)
         res.status(500).json({ message: "Error al actualizar el proyecto" })
     }
 }

@@ -31,7 +31,11 @@ const Detalle = () => {
       
       <div className="row">
         <div className="col-md-6">
-          <img src={proyecto.img} alt={proyecto.name} className="img-fluid rounded" />
+          {proyecto.img ? (
+              <img src={proyecto.img} alt={proyecto.name} className="img-fluid rounded" />
+          ) : (
+              <div className="alert alert-info">Imagen no disponible</div>
+          )}
         </div>
         <div className="col-md-6">
           <h1>{proyecto.name}</h1>
