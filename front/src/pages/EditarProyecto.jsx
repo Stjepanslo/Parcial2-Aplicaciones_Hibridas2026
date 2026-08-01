@@ -10,6 +10,7 @@ const EditarProyecto = () => {
         handleSubmit,
         setValue,
         watch,
+        setError,
         formState: { errors }
     } = useForm()
     
@@ -21,7 +22,7 @@ const EditarProyecto = () => {
     const [clientes, setClientes] = useState([])
     const [imagenPreview, setImagenPreview] = useState(null)
     const [imagenActual, setImagenActual] = useState(null)
-    
+    const [errorSubmit, setErrorSubmit] = useState("")
     const imagenFile = watch("img")
 
     useEffect(() => {
@@ -55,6 +56,8 @@ const EditarProyecto = () => {
     }, [imagenFile])
 
     const onSubmit = (formData) => {
+        setErrorSubmit("")
+        
         const form = new FormData()
         form.append("name", formData.name)
         form.append("description", formData.description)
@@ -69,7 +72,19 @@ const EditarProyecto = () => {
 
         updateProyecto(idProyecto, form)
             .then(data => navigate("/proyectos"))
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                if (err.errors) {
+                    Object.keys(err.errors).forEach(campo => {
+                        setError(campo, {
+                            type: "manual",
+                            message: err.errors[campo]
+                        })
+                    })
+                } else {
+                    setErrorSubmit(err.message || "Error al actualizar el proyecto")
+                }
+            })
     }
 
     if (loading) return <p>Cargando...</p>
@@ -80,6 +95,12 @@ const EditarProyecto = () => {
                 <div className="col-md-7">
                     <div className="card p-5 shadow">
                         <h2 className="mb-4">Editar Proyecto</h2>
+                        {errorSubmit && (
+                            <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                                {errorSubmit}
+                                <button type="button" className="btn-close" onClick={() => setErrorSubmit("")}></button>
+                            </div>
+                        )}
                         
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="mb-3">
@@ -87,9 +108,16 @@ const EditarProyecto = () => {
                                 <input 
                                     type="text" 
                                     className="form-control" 
-                                    {...register("name", { required: "Nombre es requerido" })}
+                                    {...register("name", { 
+                                        required: "Nombre es requerido",
+                                        minLength: { value: 3, message: "Mínimo 3 caracteres" }
+                                    })}
                                 />
-                                {errors.name && <span className="text-danger">{errors.name.message}</span>}
+                                {errors.name && (
+                                    <div className="alert alert-danger p-1 mt-1" style={{ fontSize: "0.8rem" }}>
+                                        {errors.name.message}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="mb-3">
@@ -97,9 +125,16 @@ const EditarProyecto = () => {
                                 <textarea 
                                     className="form-control" 
                                     rows="3"
-                                    {...register("description", { required: "Descripción es requerida" })}
+                                    {...register("description", { 
+                                        required: "Descripción es requerida",
+                                        minLength: { value: 10, message: "Mínimo 10 caracteres" }
+                                    })}
                                 ></textarea>
-                                {errors.description && <span className="text-danger">{errors.description.message}</span>}
+                                {errors.description && (
+                                    <div className="alert alert-danger p-1 mt-1" style={{ fontSize: "0.8rem" }}>
+                                        {errors.description.message}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="mb-3">
@@ -107,9 +142,16 @@ const EditarProyecto = () => {
                                 <input 
                                     type="url" 
                                     className="form-control" 
-                                    {...register("link", { required: "Link es requerido" })}
+                                    {...register("link", { 
+                                        required: "Link es requerido",
+                                        pattern: { value: /^https?:/, message: "Debe ser una URL válida" }
+                                    })}
                                 />
-                                {errors.link && <span className="text-danger">{errors.link.message}</span>}
+                                {errors.link && (
+                                    <div className="alert alert-danger p-1 mt-1" style={{ fontSize: "0.8rem" }}>
+                                        {errors.link.message}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="mb-3">
@@ -120,7 +162,11 @@ const EditarProyecto = () => {
                                     className="form-control" 
                                     {...register("img")}
                                 />
-                                {errors.img && <span className="text-danger">{errors.img.message}</span>}
+                                {errors.img && (
+                                    <div className="alert alert-danger p-1 mt-1" style={{ fontSize: "0.8rem" }}>
+                                        {errors.img.message}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="mb-3">
@@ -130,7 +176,11 @@ const EditarProyecto = () => {
                                     className="form-control" 
                                     {...register("technologies", { required: "Tecnologías son requeridas" })}
                                 />
-                                {errors.technologies && <span className="text-danger">{errors.technologies.message}</span>}
+                                {errors.technologies && (
+                                    <div className="alert alert-danger p-1 mt-1" style={{ fontSize: "0.8rem" }}>
+                                        {errors.technologies.message}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="mb-3">
@@ -146,7 +196,11 @@ const EditarProyecto = () => {
                                     <option value="cursos">Cursos</option>
                                     <option value="material">Material Pedagógico</option>
                                 </select>
-                                {errors.section && <span className="text-danger">{errors.section.message}</span>}
+                                {errors.section && (
+                                    <div className="alert alert-danger p-1 mt-1" style={{ fontSize: "0.8rem" }}>
+                                        {errors.section.message}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="mb-3">
@@ -160,7 +214,11 @@ const EditarProyecto = () => {
                                         <option key={cliente._id} value={cliente._id.toString()}>{cliente.nombre}</option>
                                     ))}
                                 </select>
-                                {errors.clientId && <span className="text-danger">{errors.clientId.message}</span>}
+                                {errors.clientId && (
+                                    <div className="alert alert-danger p-1 mt-1" style={{ fontSize: "0.8rem" }}>
+                                        {errors.clientId.message}
+                                    </div>
+                                )}
                             </div>
 
                             <button type="submit" className="btn btn-primary w-100">Guardar Cambios</button>
