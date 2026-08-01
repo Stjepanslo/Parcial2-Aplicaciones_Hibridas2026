@@ -1,6 +1,6 @@
 import * as projectsService from "../../services/projects.services.js"
 import { deleteImage } from "../../middlewares/imagenes.upload.js"
-
+//comentario cualquiera para forzar deploy
 export async function getProyectos(req, res) {
     const filter = req.query
     
