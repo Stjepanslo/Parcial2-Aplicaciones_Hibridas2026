@@ -11,7 +11,14 @@ dotenv.config()
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://parcial2-aplicaciones-hibridas2026.vercel.app"
+  ],
+  credentials: true
+}))
 app.use("/", express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
