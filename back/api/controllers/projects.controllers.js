@@ -32,7 +32,8 @@ export async function createProyecto(req, res) {
         
         const technologies = req.body.technologies.split(',').map(t => t.trim()).filter(t => t !== '')
 
-        const img = req.file ? `http://localhost:3333/uploads/${req.file.filename}` : null
+        const img = req.file ? `https://parcial2-aplicacioneshibridas2026-production.up.railway.app/uploads/${req.file.filename}` : null
+        //dejo esto aca por las dudas http://localhost:3333/uploads/ 
 
         if (!name || !section) {
             return res.status(400).json({ message: "Campos requeridos: name, section" })
@@ -93,9 +94,8 @@ export async function updateProyecto(req, res) {
         }
         
         if (req.file) {
-            proyecto.img = `http://localhost:3333/uploads/${req.file.filename}`
+            proyecto.img = `https://parcial2-aplicacioneshibridas2026-production.up.railway.app/uploads/${req.file.filename}`
             
-            // Borrar imagen vieja si existe
             if (proyectoActual.img) {
                 await deleteImage(proyectoActual.img)
             }
