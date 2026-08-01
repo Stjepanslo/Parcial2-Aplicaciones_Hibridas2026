@@ -30,6 +30,6 @@ app.use("/api", projectRoutesApi)
 app.use("/api", clientRoutesApi)
 app.use("/api/usuarios", usuariosRoutesApi)
 
-const PORT = process.env.PORT || 3333
+const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => console.log(`Servidor funcionando en http://localhost:${PORT}`))
