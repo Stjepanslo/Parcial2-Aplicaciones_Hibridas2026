@@ -25,7 +25,7 @@ export function useApi() {
             }
         }
 
-        return fetch("https://backendfinal-production-9808.up.railway.app/api" + uri, options)
+        return fetch("https://backendfinal-1jr0.onrender.com/api" + uri, options)
             .then(res => {
                 if (res.ok) return res.json()
                 if (res.status == 401) navigate("/login")
